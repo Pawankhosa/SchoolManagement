@@ -1,0 +1,329 @@
+﻿@model dynamic
+@using SchoolManagement.Models
+@using Admin2.Models
+@using SchoolFee.Models
+
+@{
+    ViewBag.Title = "PayNow";
+    Layout = "~/Views/Shared/Master.cshtml";
+    dbcontext db = new dbcontext();
+    if (TempData["Class"] != null)
+    {
+
+
+    }
+    string id = TempData["Class"].ToString();
+    int classid = int.Parse(id);
+    var fee = db.FeeModules.Where(x => x.CID == classid).ToList();
+
+    TransportCharges tc = new TransportCharges();
+    Registration rr = new Registration();
+    var regid = "";
+    MasterFee fs = new MasterFee();
+    FeeStructure structure = new FeeStructure();
+    string[] months = new string[13];
+
+}
+
+
+<div class="row">
+    <div class="col-md-2">
+        <img src="http://via.placeholder.com/150x150" />
+    </div>
+    <div class="col-md-10">
+        <table class="table table-striped">
+            <tbody>
+                @foreach (Registration item in Model.Registration)
+                {
+                    <tr>
+                        <td>Name</td>
+                        <td> @item.FirstName</td>
+                        <td>Class Section</td>
+                        <td> @item.SchoolClasses.ClassName @item.Sections.SectionName
+                           
+                        @{
+                            rr = db.Registrations.Where(x => x.REGId == item.REGId).FirstOrDefault();
+                            var trans = item.TransportCharges;
+                            int transid = Convert.ToInt32(trans.TID);
+                            tc = db.TransportCharges.Where(x => x.TID == transid).FirstOrDefault();
+                        }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Father Name</td>
+                        <td> @item.FatherName</td>
+                        <td>Admission Number</td>
+                        <td> @item.AddmissionNumber</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile Number</td>
+                        <td> @item.Mobile</td>
+                        <td>Roll Number</td>
+                        <td> @item.RollNumber</td>
+                    </tr>
+                            }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-7">
+        
+    @using (Html.BeginForm("Fee", "Feedetail", FormMethod.Post, new { name = "myform", onsubmit = "return validateForm()" }))
+    {
+        <div class="row">
+            <input type="hidden" value="@rr.AddmissionNumber" name="regno" />
+            <div class="form-group col-md-6">
+                <label>BillNo</label><br />
+                <input type="text" readonly="readonly" name="bill" class="label label-danger" value="@TempData["Bill"]" />
+
+            </div>
+            <div class="form-group col-md-6">
+                <label>Date</label>
+                <input type="text" value="@System.DateTime.Now.ToString("dd/MM/yyyy")" name="date" class="form-control" readonly="readonly" />
+            </div>
+            <div class="form-group col-md-6">
+                <label>Fee</label>
+                <input type="text" id="fee" value="@fee[0].Fee" name="fee" class="form-control" readonly="readonly" />
+               
+            </div>
+            <div class="form-group col-md-6">
+                <label>Annual Charges</label>
+                @{
+                    string se = Session["session"].ToString();
+                    structure = db.FeeStructures.Where(x => x.RID == rr.AddmissionNumber && x.Session == se).FirstOrDefault();
+                    if (structure != null)
+                    {
+                        if (structure.AnnualCharges > 0)
+                        {
+                            <input type="text" id="annual" value="0" name="annual" class="form-control" readonly="readonly" />
+                           <span class="text-danger">Already Paid</span>
+                        }
+                        else
+                        {
+                            <input type="text" id="annual" value="@fee[0].AnnualCharges" name="annual" class="form-control" readonly="readonly" />
+                        }
+                    }
+                    else
+                    {
+                        <input type="text" id="annual" value="@fee[0].AnnualCharges" name="annual" class="form-control" readonly="readonly" />
+                    }
+                }
+               
+            </div>
+            <div class="form-group col-md-12">
+                <label>Transport Charges</label>
+                <input type="text" id="trans" value="@tc.Amount" name="transport" class="form-control" readonly="readonly" />
+                Location:  @tc.AreaName
+            </div>
+            <div class="form-group col-md-12">
+                <label>Other Charges</label>
+                <input type="text" id="other" value="0" name="other" class="form-control" />
+
+            </div>
+            <div class="form-group col-md-12">
+                <label>Pay</label>
+                <input type="text" id="pay" value="0" name="pay" class="form-control" />
+                <input type="hidden" name="totalvalue" id="totalvalue" value="0" />
+
+            </div>
+            <div class="form-group col-md-12">
+                <label>Discount</label>
+                <input type="text" id="discount" value="0" name="discount" class="form-control" />
+
+            </div>
+            <div class="form-group col-md-12">
+                <label>Discount Reason</label>
+                <input type="text" id="reason" value="" name="reason" class="form-control" />
+
+            </div>
+
+            <div class="form-group col-md-12">
+                <label>Balance</label>
+                <input type="text" id="bal" value="0" name="balance" class="form-control" />
+                <input type="hidden" name="period" id="period" />
+            </div>
+            <div class="form-group col-md-12">
+
+                <input type="submit" id="trans" value="Save" name="submit" class="btn btn-default" />
+                <input type="hidden" id="hidebal" name="hidebal" />
+            </div>
+        </div>
+                    }
+       
+    </div>
+    <div class="col-md-5">
+        <div class="row">
+
+                <div class="col-md-4">
+                    @{ 
+                        string check;
+                        int idb = Convert.ToInt32(rr.AddmissionNumber);
+                        fs = db.MasterFees.Where(x => x.RID == idb).FirstOrDefault();
+                        if (fs != null)
+                        {
+                            months = fs.TimePeriod.Split(',');
+                        }
+
+                        int i = 0;
+
+                        foreach (Month Mon in Model.Month)
+                        {
+
+                            if (months.Length > i)
+                            {
+                                if (months[i] == Mon.Months)
+                                {
+                                <input id="Checkbox1" type="checkbox" name="checkbox" disabled value="@Mon.Months" onClick="checkboxes();" />@Mon.Months
+                                }
+                                else
+                                {
+                                <input id = "Checkbox1" type = "checkbox" name = "checkbox" value = "@Mon.Months" onClick = "checkboxes();" /> @Mon.Months
+                                }
+                                i = i + 1;
+                            }
+                            else
+                            {
+                                <input id = "Checkbox1" type = "checkbox" name = "checkbox" value = "@Mon.Months" onClick = "checkboxes();" /> @Mon.Months
+                            }
+                        }
+
+
+
+                        }
+                </div>
+            <div class="col-md-4">
+                Total :
+                <input type="text" id="To" value="0" name="pay" class="form-control text-danger" disabled /></div>
+            </div>
+        <br />
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Total</th>
+                        <td>Pay</td>
+                        <th>Dis</th>
+                        <td>Bal</td>
+                    </tr>
+                    @foreach (MonthlyFee fees in Model.monthlyfee)
+                    {
+                        <tr>
+                            <td>@fees.Date</td>
+                            <td>@fees.TimePeriod</td>
+                            <td>@Math.Round(fees.TotalFee)</td>
+                            <td>@Math.Round(fees.Paid)</td>
+                            <td>@Math.Round(fees.Discount)</td>
+                            <td>@Math.Round(fees.Balance)</td>
+                        </tr>
+                    }
+                </thead>
+            </table>
+            
+        </div>
+    </div>
+</div>
+
+<p>
+    <br />
+</p>
+
+<script>
+    function checkboxes()
+    {
+        
+        var inputElems = document.getElementsByTagName("input");
+        var check=document.getElementById("Checkbox1").value;
+        var fee = Number(document.getElementById("fee").value);
+        var an = Number(document.getElementById("annual").value);
+        var trans = Number(document.getElementById("trans").value);
+        var other = Number(document.getElementById("other").value);
+        count = 0;
+        var a, b, totl = 0, c = 0;
+        for (var i = 0; i < inputElems.length; i++)
+        {
+            if (inputElems[i].type == "checkbox" && inputElems[i].checked == true) {
+                count++;
+                debugger;
+                
+                if (count == 1) {
+                     a = fee + an + trans + other;
+                     c = a * count;
+                }
+                else
+                {
+                     a = fee + trans + other;
+                     totl = (a * (count-1));
+                }
+               
+                b = totl + c;
+
+                var name
+                if (count == 1) {
+                    name = inputElems[i].value;
+                }
+                else {
+                    name = name + "," + inputElems[i].value;
+                }
+
+            }
+            else
+            {
+                
+            }
+        }
+      
+        document.getElementById("To").value = b;
+        document.getElementById("totalvalue").value = b;
+        document.getElementById("pay").value = b;
+        document.getElementById("period").value=name
+    }
+
+    
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#pay").on('keyup', function () {
+            
+            //alert('pressed')
+            var a = $("#To").val();
+            debugger;
+            var totalcost = $("#To").val() - $(this).val()
+            $("#bal").val(totalcost),
+            $("#hidebal").val(totalcost);
+        })
+    });
+    $(document).ready(function () {
+        $("#discount").on('keyup', function () {
+
+            //alert('pressed')
+           
+            debugger;
+            var totalcost2 = $("#hidebal").val() - $(this).val()
+            $("#bal").val(totalcost2);
+        })
+    });
+    // validation
+    function validateForm() {
+        debugger;
+        var x = document["myform"]["pay"].value;
+        var bal = document["myform"]["bal"].value;
+        if (bal <0) {
+            alert("Please Check Balance");
+            return false;
+        }
+        
+        if (x == "0" || x == "undefined")
+        {
+            alert("Please Fill Pay Amount");
+            return false;
+        }
+       
+
+    }
+</script>

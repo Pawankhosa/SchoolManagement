@@ -1,0 +1,27 @@
+﻿@model SchoolManagement.Models.Section
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Section</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SectionName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SectionName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.SCID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

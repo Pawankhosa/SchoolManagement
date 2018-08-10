@@ -1,0 +1,59 @@
+﻿@model SchoolFee.Models.Expense
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Expense</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpenseTypes.Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExpenseTypes.Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpenseName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExpenseName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeDetail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TypeDetail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.EId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

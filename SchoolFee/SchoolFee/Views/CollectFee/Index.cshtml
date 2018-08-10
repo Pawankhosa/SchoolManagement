@@ -1,0 +1,155 @@
+﻿@model IEnumerable<SchoolManagement.Models.Registration>
+@using Admin2.Models
+@using SchoolManagement.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+    dbcontext db = new dbcontext();
+    var cla = db.SchoolClasses.ToList();
+    var sec = db.Sections.ToList();
+}
+
+
+
+
+<div class="card-header bg-info">
+    <h4 class="m-b-0 text-white">Student Admission</h4>
+</div>
+<br />
+<br />
+
+<div class="row">
+
+    @using (Html.BeginForm("Index", "CollectFee", FormMethod.Post, new { @Class = "col-md-6" }))
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Class</label>
+                    <select id="session" name="classname" class="form-control">
+                        <option>Select Class</option>
+                        @foreach (var ab in cla)
+                {
+                            <option value="@ab.CID">@ab.ClassName</option>
+                        }
+                    </select>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Section</label>
+                    <select id="session" name="sectionname" class="form-control">
+                        <option>Select Session</option>
+                        @foreach (var ab in sec)
+                {
+                            <option value="@ab.SCID">@ab.SectionName</option>
+                        }
+                    </select>
+
+                </div>
+                <input type="submit" class="btn btn-default" value="Search" />
+            </div>
+        </div>
+    }
+    <div class="col-md-6 text-right">
+        <div class="form-group">
+            <label>Search</label>
+            <input type="text" class="form-control" placeholder="Search Rollnumber,Admission Number" name="allsearch" />
+
+
+
+        </div>
+        <input type="submit" class="btn btn-default" value="Search" />
+    </div>
+
+</div>
+<br />
+<br />
+
+<div class="card-header bg-info">
+    <h4 class="m-b-0 text-white">Student Details</h4>
+</div>
+<br />
+<br />
+<table id="example23" class="display table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.SchoolClasses.ClassName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sections.SectionName)
+            </th>
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.AddmissionNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RollNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.Mobile)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FatherName)
+            </th>
+
+            <th></th>
+        </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.SchoolClasses.ClassName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sections.SectionName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.AddmissionNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RollNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mobile)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Image)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FatherName)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Collect Fee", "Edit", new { id = item.AddmissionNumber }, new { @class = "label label-primary" }) |
+                    @Html.ActionLink("PayNow", "PayNow", new { id = item.AddmissionNumber }, new { @class = "label label-info" })
+
+
+
+                </td>
+            </tr>
+        }
+
+</table>

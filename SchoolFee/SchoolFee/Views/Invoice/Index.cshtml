@@ -1,0 +1,94 @@
+﻿@model IEnumerable<SchoolFee.Models.MasterFee>
+@using SchoolManagement.Models
+@using Admin2.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+    dbcontext db = new dbcontext();
+    string regno = TempData["RID"].ToString();
+    int id = Convert.ToInt32(regno);
+    Registration rr = db.Registrations.Where(x => x.AddmissionNumber == id).FirstOrDefault()    ;
+    
+    string Date = "",amount="";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-body printableArea">
+            <h3><b>INVOICE</b> <span class="pull-right">#@TempData["Bill"]</span></h3>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-left">
+                        <address>
+                            <h3> &nbsp;<b class="text-danger">OXFORD SCHOOL MOGA</b></h3>
+                            <p class="text-muted m-l-5">
+                                G.T Road Near Main Chonk
+                                <br /> MOGA - 142001
+                            </p>
+                        </address>
+                    </div>
+                    <div class="pull-right text-right">
+                        <address>
+                            <h3>To,</h3>
+                            <h4 class="font-bold">@rr.FirstName/@rr.FatherName</h4>
+                            <p class="text-muted m-l-30">
+                               @rr.CurrentAddress
+                               
+                            </p>
+                            <p class="m-t-30"><b>Invoice Date :</b> <i class="fa fa-calendar"></i> @Date</p>
+                        </address>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-responsive m-t-40" style="clear: both;">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th>Particular</th>
+                                    <th>TimePeriod</th>
+                                    <th class="text-right">Total</th>
+                                    <th class="text-right">Pay</th>
+                                    <th class="text-right">Discount</th>
+                                    <th class="text-right">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var a in Model)
+                                {
+                                <tr>
+                                    <td class="text-center">1</td>
+                                    <td>Fee</td>
+                                    <td>@a.TimePeriod</td>
+                                    <td class="text-right">@a.TotalFee</td>
+                                    <td class="text-right"> @a.Paid</td>
+                                    <td class="text-right"> @a.Discount</td>
+                                    <td class="text-right"> @a.Balance</td>
+                                    @{Date = a.Date.ToString();
+                                        amount = a.Paid.ToString();
+                                     }
+                                </tr>
+                                
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="pull-right m-t-30 text-right">
+                       
+                        <hr>
+                        <h3><b>Total :</b> Rs.@amount</h3>
+                       
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr>
+                    <div class="text-right">
+                        <button id="print" class="btn btn-default btn-outline" type="button"> <span><i class="fa fa-print"></i> Print</span> </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

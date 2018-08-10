@@ -1,0 +1,91 @@
+﻿@model SchoolFee.Models.MonthlyFee
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>MonthlyFee</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BillNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BillNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.session)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.session)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalFee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalFee)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Paid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Paid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Balance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Balance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimePeriod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimePeriod)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MonthId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

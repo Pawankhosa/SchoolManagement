@@ -1,0 +1,90 @@
+﻿@model IEnumerable<SchoolManagement.Models.Registration>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table id="example23" class="display table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.SchoolClasses.ClassName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sections.SectionName)
+            </th>
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.AddmissionNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RollNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+
+
+            <th>
+                @Html.DisplayNameFor(model => model.Mobile)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FatherName)
+            </th>
+
+            <th></th>
+        </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.SchoolClasses.ClassName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sections.SectionName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.AddmissionNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RollNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mobile)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Image)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FatherName)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.REGId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.REGId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.REGId })
+                </td>
+            </tr>
+        }
+
+</table>

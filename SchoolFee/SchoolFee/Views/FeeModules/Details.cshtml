@@ -1,0 +1,43 @@
+﻿@model SchoolManagement.Models.FeeModule
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>FeeModule</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SchoolClasses.ClassName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SchoolClasses.ClassName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fee)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fee)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AnnualCharges)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnnualCharges)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.FID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

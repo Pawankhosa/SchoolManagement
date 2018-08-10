@@ -1,0 +1,80 @@
+﻿@model dynamic
+@using SchoolManagement.Models
+@using SchoolFee.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-2">
+        <img src="http://via.placeholder.com/150x150" />
+    </div>
+    <div class="col-md-10">
+        <table class="table table-striped">
+            <tbody>
+                @foreach (Registration item in Model.Registration)
+                {
+                    <tr>
+                        <td>Name</td>
+                        <td> @Html.DisplayFor(modelItem => item.FirstName)</td>
+                        <td>Class Section</td>
+                        <td> @Html.DisplayFor(modelItem => item.SchoolClasses.ClassName) @Html.DisplayFor(modelItem => item.Sections.SectionName)</td>
+                    </tr>
+                    <tr>
+                        <td>Father Name</td>
+                        <td> @Html.DisplayFor(modelItem => item.FatherName)</td>
+                        <td>Admission Number</td>
+                        <td> @Html.DisplayFor(modelItem => item.AddmissionNumber)</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile Number</td>
+                        <td> @Html.DisplayFor(modelItem => item.Mobile)</td>
+                        <td>Roll Number</td>
+                        <td> @Html.DisplayFor(modelItem => item.RollNumber)</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p>
+    <table class="table table-striped">
+
+        <tbody>
+            <tr>
+                <th>Date</th>
+                <th>BillNo</th>
+                <th>Time Period</th>
+                <th>TotalFee</th>
+                <th>Paid</th>
+                <th>Discount</th>
+                <th>Balance</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            @foreach (MonthlyFee item in Model.MonthlyDetail)
+            {
+                <tr>
+                    <td>@item.Date</td>
+                    <td> @item.BillNo</td>
+                    <td>@item.TimePeriod</td>
+                    <td>@Math.Round(item.TotalFee)</td>
+                    <td>@Math.Round(item.Paid)</td>
+                    <td>@Math.Round(item.Discount)</td>
+                    <td>@Math.Round(item.Balance)</td>
+                    <td>@item.status</td>
+                    <td>
+                        @Html.ActionLink("Reprint","Reprint",new {id=item.BillNo })
+                    </td>
+                </tr>
+                    
+            }
+
+        </tbody>
+    </table>
+
+</p>
+

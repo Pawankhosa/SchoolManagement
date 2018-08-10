@@ -1,0 +1,34 @@
+﻿@using Admin2.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Master.cshtml";
+    dbcontext db = new dbcontext();
+    var month = db.Months.ToList();
+}
+
+<h2>Index</h2>
+
+@foreach (var a in month)
+{
+    <input id="Checkbox1" type="checkbox" value="" onClick="checkboxes();" />@a.Months
+    <input id="hfid" type="hidden" value="200" />
+    <label id="show"></label>
+}
+
+<script>
+    function checkboxes()
+    {
+        debugger;
+        var inputElems = document.getElementsByTagName("input");
+        var fee =document.getElementById("hfid").value;
+        count = 0;
+        for (var i = 0; i < inputElems.length; i++) {
+            if (inputElems[i].type == "checkbox" && inputElems[i].checked == true) {
+                count++;
+                var a = 200;
+                var b = a * count;
+            }
+        }
+        document.getElementById("show").innerText = b;
+    }
+</script>
