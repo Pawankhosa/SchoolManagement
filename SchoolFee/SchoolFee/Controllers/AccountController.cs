@@ -168,7 +168,7 @@ namespace SchoolFee.Controllers
                 }
                 AddErrors(result);
             }
-
+            TempData["Success"] = "Saved Successfully";
             // If we got this far, something failed, redisplay form
             return View(model);
         }

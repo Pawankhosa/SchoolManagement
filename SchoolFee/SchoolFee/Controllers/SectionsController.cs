@@ -54,6 +54,7 @@ namespace SchoolFee.Controllers
             {
                 db.Sections.Add(section);
                 await db.SaveChangesAsync();
+                TempData["Success"] = "Saved Successfully";
                 return RedirectToAction("Index");
             }
 
@@ -86,6 +87,7 @@ namespace SchoolFee.Controllers
             {
                 db.Entry(section).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+                TempData["Success"] = "Updated Successfully";
                 return RedirectToAction("Index");
             }
             return View(section);
@@ -114,6 +116,7 @@ namespace SchoolFee.Controllers
             Section section = await db.Sections.FindAsync(id);
             db.Sections.Remove(section);
             await db.SaveChangesAsync();
+            TempData["Success"] = "Deleted Successfully";
             return RedirectToAction("Index");
         }
 

@@ -19,6 +19,8 @@
     <title>AdminPanel</title>
     <!-- Custom CSS -->
     <link href="~/dist/css/style.min.css" rel="stylesheet">
+    <link href="~/Content/alertifyjs/alertify.min.css" rel="stylesheet" />
+    <link href="~/Content/alertifyjs/themes/default.min.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -643,7 +645,16 @@
         });
     });
     </script>
+    <script src="~/Scripts/alertify.min.js"></script>
+    <script>
+        $(function () {
+            debugger;
+            var message = '@TempData["Success"]'
+            if (message != '') {
+                alertify.success(message);
+            }
+        })
+    </script>
 </body>
 
-<!-- Mirrored from www.wrappixel.com/demos/admin-templates/elegant-admin/modern/pages-blank.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 14 Apr 2018 10:08:37 GMT -->
 </html>

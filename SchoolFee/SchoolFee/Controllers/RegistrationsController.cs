@@ -18,7 +18,7 @@ namespace SchoolFee.Controllers
     public class RegistrationsController : BaseController
     {
         private dbcontext db = new dbcontext();
-
+        public static string img;
         // GET: Registrations
         public async Task<ActionResult> Index()
         {
@@ -58,15 +58,14 @@ namespace SchoolFee.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "REGId,Session,Type,AddmissionNumber,RollNumber,CID,SCID,FirstName,LastName,Gender,DOB,CatID,Mobile,Email,AdmissionDate,Image,FatherName,FatherPhone,FatherOccupation,MotherName,MotherPhone,MotherOccupation,CurrentAddress,ParmanentAddress,AadharNumber,TID,SpecialCase,Remarks")] Registration registration,string admission)
+        public async Task<ActionResult> Create([Bind(Include = "REGId,Session,Type,AddmissionNumber,RollNumber,CID,SCID,FirstName,LastName,Gender,DOB,CatID,Mobile,Email,AdmissionDate,Image,FatherName,FatherPhone,FatherOccupation,MotherName,MotherPhone,MotherOccupation,CurrentAddress,ParmanentAddress,AadharNumber,TID,SpecialCase,Remarks")] Registration registration,string admission, HttpPostedFileBase file, Helper Help)
         {
             if (ModelState.IsValid)
             {
-                
-                    
                     try
                     {
-                        var check = db.Registrations.Where(x => x.AddmissionNumber == registration.AddmissionNumber).FirstOrDefault();
+                    registration.Image = Help.uploadfile(file);
+                    var check = db.Registrations.Where(x => x.AddmissionNumber == registration.AddmissionNumber).FirstOrDefault();
                         if (check!=null)
                         {
                             this.SetNotification("Admission Number Busy", NotificationEnumeration.Error);
@@ -123,7 +122,7 @@ namespace SchoolFee.Controllers
 
                     throw;
                     }
-                
+                TempData["Success"] = "Saved Successfully";
                 return RedirectToAction("Index");
             }
 
@@ -158,12 +157,27 @@ namespace SchoolFee.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "REGId,Session,Type,AddmissionNumber,RollNumber,CID,SCID,FirstName,LastName,Gender,DOB,CatID,Mobile,Email,AdmissionDate,Image,FatherName,FatherPhone,FatherOccupation,MotherName,MotherPhone,MotherOccupation,CurrentAddress,ParmanentAddress,AadharNumber,TID,SpecialCase,Remarks")] Registration registration)
+        public async Task<ActionResult> Edit([Bind(Include = "REGId,Session,Type,AddmissionNumber,RollNumber,CID,SCID,FirstName,LastName,Gender,DOB,CatID,Mobile,Email,AdmissionDate,Image,FatherName,FatherPhone,FatherOccupation,MotherName,MotherPhone,MotherOccupation,CurrentAddress,ParmanentAddress,AadharNumber,TID,SpecialCase,Remarks")] Registration registration, HttpPostedFileBase file, Helper Help)
         {
             if (ModelState.IsValid)
             {
+                registration.Image = file != null ? Help.uploadfile(file) : img;
+                #region delete file
+                string fullPath = Request.MapPath("UploadedFiles/" + img);
+                if (img == registration.Image)
+                {
+                }
+                else
+                {
+                    if (System.IO.File.Exists(fullPath))
+                    {
+                        System.IO.File.Delete(fullPath);
+                    }
+                }
+                #endregion
                 db.Entry(registration).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+                TempData["Success"] = "Updated Successfully";
                 return RedirectToAction("Index");
             }
             ViewBag.CatID = new SelectList(db.CatDatas, "CatID", "CategoryName", registration.CatID);
@@ -196,6 +210,7 @@ namespace SchoolFee.Controllers
             Registration registration = await db.Registrations.FindAsync(id);
             db.Registrations.Remove(registration);
             await db.SaveChangesAsync();
+            TempData["Success"] = "Deleted Successfully";
             return RedirectToAction("Index");
         }
 

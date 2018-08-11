@@ -58,6 +58,7 @@ namespace SchoolFee.Controllers
             {
                 db.Expenses.Add(expense);
                 await db.SaveChangesAsync();
+                TempData["Success"] = "Saved Successfully";
                 return RedirectToAction("Index");
             }
 
@@ -92,6 +93,7 @@ namespace SchoolFee.Controllers
             {
                 db.Entry(expense).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+                TempData["Success"] = "Updated Successfully";
                 return RedirectToAction("Index");
             }
             ViewBag.ETID = new SelectList(db.ExpenseTypes, "ETID", "Type", expense.ETID);
@@ -121,6 +123,7 @@ namespace SchoolFee.Controllers
             Expense expense = await db.Expenses.FindAsync(id);
             db.Expenses.Remove(expense);
             await db.SaveChangesAsync();
+            TempData["Success"] = "Deleted Successfully";
             return RedirectToAction("Index");
         }
 

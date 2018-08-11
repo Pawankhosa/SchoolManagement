@@ -39,7 +39,7 @@ namespace SchoolManagement.Controllers
             }
             catch (Exception e)
             {
-                return "False";
+               return "False";
             }
         }
         public void excel(HttpPostedFileBase Data)

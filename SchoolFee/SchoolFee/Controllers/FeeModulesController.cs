@@ -56,6 +56,7 @@ namespace SchoolFee.Controllers
             {
                 db.FeeModules.Add(feeModule);
                 await db.SaveChangesAsync();
+                TempData["Success"] = "Saved Successfully";
                 return RedirectToAction("Index");
             }
 
@@ -90,6 +91,7 @@ namespace SchoolFee.Controllers
             {
                 db.Entry(feeModule).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+                TempData["Success"] = "Updated Successfully";
                 return RedirectToAction("Index");
             }
             ViewBag.CID = new SelectList(db.SchoolClasses, "CID", "ClassName", feeModule.CID);
@@ -119,6 +121,7 @@ namespace SchoolFee.Controllers
             FeeModule feeModule = await db.FeeModules.FindAsync(id);
             db.FeeModules.Remove(feeModule);
             await db.SaveChangesAsync();
+            TempData["Success"] = "Deleted Successfully";
             return RedirectToAction("Index");
         }
 

@@ -54,6 +54,7 @@ namespace SchoolFee.Controllers
             {
                 db.MasterFees.Add(masterFee);
                 await db.SaveChangesAsync();
+                TempData["Success"] = "Saved Successfully";
                 return RedirectToAction("Index");
             }
 
@@ -86,6 +87,7 @@ namespace SchoolFee.Controllers
             {
                 db.Entry(masterFee).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+                TempData["Success"] = "Updated Successfully";
                 return RedirectToAction("Index");
             }
             return View(masterFee);
@@ -114,6 +116,7 @@ namespace SchoolFee.Controllers
             MasterFee masterFee = await db.MasterFees.FindAsync(id);
             db.MasterFees.Remove(masterFee);
             await db.SaveChangesAsync();
+            TempData["Success"] = "Deleted Successfully";
             return RedirectToAction("Index");
         }
 

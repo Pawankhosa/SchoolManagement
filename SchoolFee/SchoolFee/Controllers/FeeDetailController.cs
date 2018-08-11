@@ -126,12 +126,7 @@ namespace SchoolFee.Controllers
 
 
                 }
-                
-                
-                
-
-
-
+                TempData["Success"] = "Saved Successfully";
                 return RedirectToAction("Index","Invoice", new {id=bill });
             }
             catch

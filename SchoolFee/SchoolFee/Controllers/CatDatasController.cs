@@ -54,9 +54,10 @@ namespace SchoolFee.Controllers
             {
                 db.CatDatas.Add(catData);
                 await db.SaveChangesAsync();
+                TempData["Success"] = "Saved Successfully";
                 return RedirectToAction("Index");
             }
-
+         
             return View(catData);
         }
 
@@ -86,8 +87,10 @@ namespace SchoolFee.Controllers
             {
                 db.Entry(catData).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+                TempData["Success"] = "Updated Successfully";
                 return RedirectToAction("Index");
             }
+           
             return View(catData);
         }
 
@@ -114,6 +117,7 @@ namespace SchoolFee.Controllers
             CatData catData = await db.CatDatas.FindAsync(id);
             db.CatDatas.Remove(catData);
             await db.SaveChangesAsync();
+            TempData["Success"] = "Deleted Successfully";
             return RedirectToAction("Index");
         }
 

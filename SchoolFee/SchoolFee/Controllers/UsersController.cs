@@ -56,6 +56,7 @@ namespace SchoolFee.Controllers
             {
                 db.Users.Add(user);
                 await db.SaveChangesAsync();
+                TempData["Success"] = "Saved Successfully";
                 return RedirectToAction("Index");
             }
 
@@ -88,6 +89,7 @@ namespace SchoolFee.Controllers
             {
                 db.Entry(user).State = EntityState.Modified;
                 await db.SaveChangesAsync();
+                TempData["Success"] = "Updated Successfully";
                 return RedirectToAction("Index");
             }
             return View(user);
@@ -116,6 +118,7 @@ namespace SchoolFee.Controllers
             User user = await db.Users.FindAsync(id);
             db.Users.Remove(user);
             await db.SaveChangesAsync();
+            TempData["Success"] = "Deleted Successfully";
             return RedirectToAction("Index");
         }
 
@@ -141,6 +144,7 @@ namespace SchoolFee.Controllers
                     
                     Session["session"] = sessionname;
                     Session["UserName"] = user;
+                    TempData["Success"] = "Login Successfully";
                     return RedirectToAction("Index", "Registrations");
                 }
                 else
